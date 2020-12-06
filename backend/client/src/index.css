@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700;800;900&display=swap');
+
+/* purgecss start ignore */
+@import "tailwindcss/base";
+/* purgecss end ignore */
+
+.home-bg{
+    background-image: url("https://www.goshensurvivors.com/wp-content/uploads/2020/07/Mindfulness.jpeg");    
+}
+
+.about-bg{
+    background-image: url("https://www.metoffice.gov.uk/binaries/content/gallery/metofficegovuk/hero-images/weather/wind/dandelion-clock-blowing-in-the-wind-photo-dawid-zawila.jpg");   
+}
+
+.home-blur{
+    backdrop-filter: blur(10px);
+}
+
+.mindfulness-bg{
+    background-image: url("https://youmatter.world/app/uploads/sites/2/2020/02/what-mindfulness-definition.jpg"); 
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.mandala-bg{
+    background-image: url("assets/bg-mandala.png");
+}
+
+.goal-bg{
+    background-image: url("assets/bg-goal.png");
+}
+
+.team-bg{
+    background-image: url("assets/team-bg.png");
+}
+
+.signup-bg{
+    background-image: url("https://hms.harvard.edu/sites/default/files/media/Better%20Together.jpg");
+}
+
+.sign-form{
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0px 5px 4px rgba(202, 195, 195, 0.25);
+    backdrop-filter: blur(4px);
+}
+
+.contactus-bg{
+    background-image: url("https://www.lifesourcecounselingpllc.com/wp-content/uploads/2015/10/Depositphotos_21285873_m-2015.jpg");
+}
+
+.counselor-bg{
+    background-image: url("https://happiful.com/content/images/2017/03/Counsellor-Group-Therapy-1000-min.jpg");
+}
+
+.booking-bg{
+    background-image: url("https://www.salongold.co.uk/wp-content/uploads/2018/07/therapist-and-counsellor-insurance.jpg");
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(41, 41, 41, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-inner {
+    position: absolute;
+    top: 8%;
+    right: 0;
+    left: 0;
+    margin: auto;
+}
+
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
