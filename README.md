@@ -1,2 +1,7 @@
 # MIAHY
-A platform to find and book a private counselor.
+A platform to find and book for a private counselor.
+
+### Get Started
+
+- Start the project:
+`npm run dev`
