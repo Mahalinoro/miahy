@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import {ReactComponent as Line} from '../assets/line.svg';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -10,56 +10,35 @@ class SignIn extends React.Component{
     super();
     this.state = {
       email: "",
-      password: "",
+      phoneNumber: "",
       errors: {}
     };
   }
 
-  componentDidMount() {
-    // If logged in and user navigates to Login page, should redirect them to dashboard
-    if (this.props.auth.isAuthenticated) {
-      const { user } = this.state.auth;
-      if(user.role === "patient"){
-        this.props.history.push("/patient-dashboard"); // push user to dashboard when they login
-      } else if(user.role === "counselor") {
-        this.props.history.push("/counselor-dashboard");
-      } else if(user.role === "admin"){
-        this.props.history.push("/admin-dashboard");
-      }
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-
-      const { user } = this.state.auth;
-      if(user.role === "patient"){
-        this.props.history.push("/patient-dashboard"); // push user to dashboard when they login
-      } else if(user.role === "counselor") {
-        this.props.history.push("/counselor-dashboard");
-      } else if(user.role === "admin"){
-        this.props.history.push("/admin-dashboard");
+      this.props.history.push("/patient-dashboard"); // push user to dashboard when they login
+    }
+  if (nextProps.errors) {
+        this.setState({
+          errors: nextProps.errors
+        });
       }
-    };
-      
-    if (nextProps.errors) {
-          this.setState({
-            errors: nextProps.errors
-          });
-        }
-      }
+    }
 
-  onChange = e => {
-      this.setState({ [e.target.id]: e.target.value });
-    };
-  onSubmit = e => {
-      e.preventDefault();
-      const userData = {
+  HandleOnChange = e => {
+    this.setState({ [e.target.id]: e.target.value });
+  };
+
+  HandleOnSubmit = e => {
+    e.preventDefault();
+    const userData = {
         email: this.state.email,
         password: this.state.password
       };
 
-  this.props.loginUser(userData);
+    this.props.loginUser(userData);
+   
   };
 
     render() {
@@ -75,34 +54,37 @@ class SignIn extends React.Component{
                     <Line />
                   </div>
                   
-                  <form noValidate onSubmit={this.onSubmit} className="px-5">
+                  <form noValidate onSubmit={this.HandleOnSubmit} className="px-5">
                     <label className="text-opacity-80 text-black">email address</label>
-                    <span className="text-sm text-red-200">
+                    <span className="text-sm text-red-400 font-bold inline-block">
                       {errors.email}
                       {errors.emailnotfound}
                     </span>
                     <div className="mb-4">
-                      <input className="border-b-2 border-opacity-50 bg-transparent w-80 mr-2 pl-2 py-1"
-                      onChange={this.onChange}
+                      <input onChange={this.HandleOnChange}
                       value={this.state.email}
                       error={errors.email}
                       id="email"
-                      type="email" placeholder="eg. j.doe@gmail.com"></input>
+                      type="email"
+                      className="border-b-2 border-opacity-50 bg-transparent w-80 mr-2 pl-2 py-1"
+                      placeholder="eg. j.doe@gmail.com"></input>
                       <img alt="mail" className="h-auto w-5 inline" src="/arroba.png"></img>
                     </div>
 
                     <label className="text-opacity-80 text-black">password</label>
-                    <span className="text-sm text-red-20">
+                    <span className="text-sm text-red-400 font-bold inline-block">
                       {errors.password}
                       {errors.passwordincorrect}
                     </span>
+                    <span className="text-sm text-red-20">
+                    </span>
                     <div className="mb-8">
                       <input className="border-b-2 border-opacity-50 bg-transparent w-80 mr-2 pl-2 py-1"
-                      onChange={this.onChange}
+                      onChange={this.HandleOnChange}
                       value={this.state.password}
                       error={errors.password}
                       id="password"
-                      type="password" placeholder="**********"></input>
+                      type="password" autocomplete="on" placeholder="**********"></input>
                       <img alt="padlock" className="h-auto w-5 inline" src="/padlock.png"></img>
                     </div>
 
@@ -137,4 +119,4 @@ const mapStateToProps = state => ({
 export default connect(
   mapStateToProps,
   { loginUser }
-)(SignIn);
+)(withRouter(SignIn));

@@ -1,2 +1,2 @@
-# Miahy
-MIAHY is an platfom that aims at breaking the stigma around mental health in the Malagasy community
+# MIAHY
+A platform to find and book a private counselor.

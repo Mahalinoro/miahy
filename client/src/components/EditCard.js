@@ -2,9 +2,6 @@ import React from 'react';
 import {ReactComponent as Line} from '../assets/line.svg';
 
 export default class EditCard extends React.Component{
-  constructor(props){
-    super(props);
-  }
     render() {
         return (          
             <div className="px-14 py-10">         

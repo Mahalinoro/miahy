@@ -1,31 +1,38 @@
 import React from 'react';
 import PatientProfile from '../components/PatientProfile.js';
 import PatientBooking from '../components/PatientBooking.js';
-import Balance from '../components/Balance.js';
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { logoutUser } from "../actions/authActions";
 
-export default class CounselorDashboard extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state = {isProfileActive: true, isBookingActive: false, isBalanceActive: false};
+class PatientDashboard extends React.Component{
+    constructor() {
+        super();
+        this.state = {isProfileActive: true, isBookingActive: false};
     }
     
+    onLogoutClick = e => {
+        e.preventDefault();
+        this.props.logoutUser();
+      };
+
+      
     handleClickProfile() {
-        this.setState({isProfileActive: true, isBookingActive: false, isBalanceActive: false});
+        this.setState({isProfileActive: true, isBookingActive: false});
     }
     
     handleClickBooking() {
-        this.setState({isProfileActive: false, isBookingActive: true, isBalanceActive: false});
-    }
-
-    handleClickBalance() {
-        this.setState({isProfileActive: false, isBookingActive: false, isBalanceActive: true});
+        this.setState({isProfileActive: false, isBookingActive: true});
     }
 
     render() {
-        let content, profile, booking, balance;
+        const { user } = this.props.auth;
+
+        let content, profile, booking;
         if(this.state.isProfileActive){
             content = (
-                <PatientProfile />
+                <PatientProfile 
+                />
             );
             profile = (
                 <li className="py-6 px-14 bg-blue-50" onClick={() => {this.handleClickProfile()}}>
@@ -42,15 +49,9 @@ export default class CounselorDashboard extends React.Component{
                 <span className="font-medium text-gray-300 text-xl">Bookings</span>
             </button></li>
             );
-            balance = (
-                <li className="py-6 px-14" onClick={() => {this.handleClickBalance()}}>
-                <button className="flex items-center">
-                <img className="h-auto w-6 inline mr-5" alt="bookings" src="/balance-grey.png"></img>
-                <span className="font-medium text-gray-300 text-xl">Balance</span>
-            </button></li>
-            );
+
         }
-        else if(this.state.isBookingActive){
+        else{
             content = (
                 <PatientBooking />
             );
@@ -70,40 +71,6 @@ export default class CounselorDashboard extends React.Component{
                     </button>
                 </li>
             );
-            balance = (
-                <li className="py-6 px-14" onClick={() => {this.handleClickBalance()}}>
-                <button className="flex items-center">
-                <img className="h-auto w-6 inline mr-5" alt="bookings" src="/balance-grey.png"></img>
-                <span className="font-medium text-gray-300 text-xl">Balance</span>
-            </button></li>
-            );
-        } else if(this.state.isBalanceActive){
-            content = (
-                <Balance />
-            );
-            profile = (
-                <li className="py-6 px-14" onClick={() => {this.handleClickProfile()}}>
-                    <button className="flex items-center">
-                        <img className="h-auto w-6 inline mr-5" alt="user" src="/user-grey.png"></img>
-                        <span className="font-medium text-gray-300 text-xl">Profile</span>           
-                    </button>
-                </li>
-            );
-            booking = (
-                <li className="py-6 px-14" onClick={() => {this.handleClickBooking()}}>
-                    <button className="flex items-center">
-                        <img className="h-auto w-6 text-gray-300 inline mr-5" alt="bookings" src="/dashboard-grey.png"></img>
-                        <span className="font-medium text-gray-300 text-xl">Bookings</span>
-                    </button>
-                </li>
-            );
-            balance = (
-                <li className="py-6 px-14 bg-blue-50" onClick={() => {this.handleClickBalance()}}>
-                <button className="flex items-center">
-                <img className="h-auto w-6 inline text-gray-300 mr-5" alt="balance" src="/balance-blue.png"></img>
-                <span className="font-medium text-primary text-xl">Balance</span>
-            </button></li>
-            );
         }
 
         return (          
@@ -114,7 +81,6 @@ export default class CounselorDashboard extends React.Component{
                             <ul>
                                 {profile}
                                 {booking}
-                                {balance}
                                 <li className="py-6 px-14">
                                     <button className="flex items-center cursor-not-allowed">
                                         <img className="h-auto w-6 inline mr-5" alt="settings" src="/settings.png"></img>
@@ -129,3 +95,17 @@ export default class CounselorDashboard extends React.Component{
         );
     }
 }
+
+PatientDashboard.propTypes = {
+    logoutUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
+  };
+
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(
+mapStateToProps,
+{ logoutUser }
+)(PatientDashboard);

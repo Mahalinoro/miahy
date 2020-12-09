@@ -1,7 +1,33 @@
 import React from 'react';
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { logoutUser } from "../actions/authActions";
 
-export default class PatientDashboard extends React.Component{
+class PatientProfile extends React.Component{
     render() {
+        const { user } = this.props.auth;
+        // let bio, interests;
+
+        // if(user.bio === ""){
+        //     bio = (
+        //         <p className="text-black font-light text-opacity-50 text-sm mb-6 text-justify">Empty Bio.</p>
+        //     );
+        // }else{
+        //     bio = (
+        //         <p className="text-black font-light text-opacity-50 text-sm mb-6 text-justify">{user.bio}</p>
+        //     );
+        // }
+
+        // if(user.interests === ""){
+        //     interests = (
+        //         <p className="text-black font-light text-opacity-50 text-sm mb-6 text-justify">Empty Interests.</p>
+        //     );
+        // }else{
+        //     interests = (
+        //         <p className="text-black font-light text-opacity-50 text-sm mb-6 text-justify">{user.interests}</p>
+        //     );
+        // }
+
         return (          
             <div className="p-14">   
                 <p className="font-medium text-black text-opacity-80 text-5xl mb-6">Profile</p>
@@ -14,11 +40,11 @@ export default class PatientDashboard extends React.Component{
                             </div>
                             
                             <p className="text-black font-medium text-opacity-80 text-xl mb-2">Full Name</p>
-                            <p className="text-black font-light text-opacity-50 text-sm mb-2">John Doe</p>
+                            <p className="text-black font-light text-opacity-50 text-sm mb-2">{user.name}</p>
                             <p className="text-black font-medium text-opacity-80 text-xl mb-2">Email Address</p>
-                            <p className="text-black font-light text-opacity-50 text-sm mb-2">j.doe@gmail.com</p>
+                            <p className="text-black font-light text-opacity-50 text-sm mb-2">a.doe@gmail.com</p>
                             <p className="text-black font-medium text-opacity-80 text-xl mb-2">Phone Number</p>
-                            <p className="text-black font-light text-opacity-50 text-sm">+261 32 46 519 95</p>
+                            <p className="text-black font-light text-opacity-50 text-sm">+251489652378</p>
                         </div>
 
                         <div className="flex-grow-0 bg-white shadow-lg rounded-lg p-12">
@@ -44,9 +70,9 @@ export default class PatientDashboard extends React.Component{
                     <div className="flex-grow-0 h-4/5 bg-white shadow-lg rounded-lg p-12 w-1/3">
                         <img className="rounded-full w-48 h-auto mx-auto" alt="profile" src="/default-profile.png"></img>
                         <p className="text-black font-medium text-opacity-80 text-xl mb-2">Bio</p>
-                        <p className="text-black font-light text-opacity-50 text-sm mb-6 text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
+                         <p className="text-black font-light text-opacity-50 text-sm mb-6 text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                         <p className="text-black font-medium text-opacity-80 text-xl mb-2">Interests</p>
-                        <p className="text-black font-light text-opacity-50 text-sm mb-6 text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
+                        <p className="text-black font-light text-opacity-50 text-sm mb-6 text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
                         <div className="flex justify-center">
                             <button className="border border-primary bg-primary rounded-md px-6 py-2 text-white font-bold hover:bg-white hover:text-primary hover:border-primary">Edit</button>
                         </div>
@@ -58,3 +84,17 @@ export default class PatientDashboard extends React.Component{
         );
     }
 }
+
+PatientProfile.propTypes = {
+    logoutUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired
+  };
+
+const mapStateToProps = state => ({
+    auth: state.auth
+});
+
+export default connect(
+mapStateToProps,
+{ logoutUser }
+)(PatientProfile);

@@ -1,5 +1,6 @@
 import React from 'react';
 import {ReactComponent as Line} from '../assets/line.svg';
+import { NavLink } from 'react-router-dom';
 
 export default class CounselorCard extends React.Component{
     constructor(props) {
@@ -58,7 +59,7 @@ export default class CounselorCard extends React.Component{
                                 </div>
                             </div>
 
-                            <button className="border-2 bg-primary rounded-md px-4 py-2 w-full text-white font-bold hover:bg-white hover:text-primary hover:border-primary">PROCEED</button>
+                            <NavLink to="/checkout" className="block text-center border-2 bg-primary rounded-md px-4 py-2 w-full text-white font-bold hover:bg-white hover:text-primary hover:border-primary">PROCEED</NavLink>
                         </form>
                     </div>                
                 </div>

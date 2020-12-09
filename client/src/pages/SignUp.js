@@ -1,10 +1,9 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import {ReactComponent as Line} from '../assets/line.svg';
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { registerUser } from "../actions/authActions";
-import { withRouter } from "react-router";
 
 class SignUp extends React.Component{
   constructor() {
@@ -14,22 +13,15 @@ class SignUp extends React.Component{
       email: "",
       phoneNumber: "",
       password: "",
-      errors: {},
-      success: false
+      succesfully: false,
+      errors: {}
     };
   }
 
   componentDidMount() {
     // If logged in and user navigates to Register page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
-      const { user } = this.state.auth;
-      if(user.role === "patient"){
-        this.props.history.push("/patient-dashboard"); // push user to dashboard when they login
-      } else if(user.role === "counselor") {
-        this.props.history.push("/counselor-dashboard");
-      } else if(user.role === "admin"){
-        this.props.history.push("/admin-dashboard");
-      }
+      this.props.history.push("/patient-dashboard");
     }
   }
 
@@ -41,25 +33,25 @@ class SignUp extends React.Component{
     }
   }
 
-  onChange = e => {
-      this.setState({ [e.target.id]: e.target.value });
-    };
+  HandleOnChange = e => {
+    this.setState({ [e.target.id]: e.target.value });
+  };
 
-  onSubmit = e => {
-      e.preventDefault();
-
+  HandleOnSubmit = e =>{
+    e.preventDefault();
     const newUser = {
-          name: this.state.name,
-          email: this.state.email,
-          phoneNumber: this.state.phoneNumber,
-          password: this.state.password,
-        };
-    // this.setState({success: true})
-    this.props.registerUser(newUser, this.props.history); 
-    };
+        name: this.state.name,
+        email: this.state.email,
+        phoneNumber: this.state.phoneNumber,
+        password: this.state.password
+      };
 
+    this.props.registerUser(newUser, this.props.history); 
+    this.setState({success: true});    
+  };
+   
     render() {
-      const {errors} = this.state;
+      const { errors } = this.state;
 
       let content;
       if(this.state.success){
@@ -86,12 +78,12 @@ class SignUp extends React.Component{
                     <Line />
                   </div>
                   
-                  <form noValidate onSubmit={this.onSubmit} className="px-5">
+                  <form noValidate onSubmit={this.HandleOnSubmit} className="px-5">
                     <label className="text-opacity-80 text-black">full name</label>
-                    <span className="text-sm text-red-200">{errors.name}</span>
+                    <span className="text-sm text-red-400 font-bold inline-block">{errors.name}</span>
                     <div className="mb-4">
                       <input className="border-b-2 border-opacity-50 bg-transparent w-80 mr-2 pl-2 py-1" 
-                      onChange={this.onChange}
+                      onChange={this.HandleOnChange}
                       value={this.state.name}
                       error={errors.name}
                       id="name"
@@ -100,10 +92,10 @@ class SignUp extends React.Component{
                     </div>
 
                     <label className="text-opacity-80 text-black">email address</label>
-                    <span className="text-sm text-red-200">{errors.email}</span>
+                    <span className="text-sm text-red-400 font-bold inline-block">{errors.email}</span>
                     <div className="mb-4">
                       <input className="border-b-2 border-opacity-50 bg-transparent w-80 mr-2 pl-2 py-1"
-                      onChange={this.onChange}
+                      onChange={this.HandleOnChange}
                       value={this.state.email}
                       error={errors.email}
                       id="email"
@@ -112,10 +104,10 @@ class SignUp extends React.Component{
                     </div>
 
                     <label className="text-opacity-80 text-black">phone number</label>
-                    <span className="text-sm text-red-200">{errors.phoneNumber}</span>
+                    <span className="text-sm text-red-400 font-bold inline-block">{errors.phoneNumber}</span>
                     <div className="mb-4">
                       <input className="border-b-2 border-opacity-50 bg-transparent w-80 mr-2 pl-2 py-1"
-                      onChange={this.onChange}
+                      onChange={this.HandleOnChange}
                       value={this.state.phoneNumber}
                       error={errors.phoneNumber}
                       id="phoneNumber"
@@ -124,13 +116,14 @@ class SignUp extends React.Component{
                     </div>
 
                     <label className="text-opacity-80 text-black">password</label>
-                    <span className="text-sm text-red-200">{errors.password}</span>
+                    <span className="text-sm text-red-400 font-bold inline-block">{errors.password}</span>
                     <div className="mb-8">
-                      <input className="border-b-2 border-opacity-50 bg-transparent w-80 mr-2 pl-2 py-1" onChange={this.onChange}
+                      <input className="border-b-2 border-opacity-50 bg-transparent w-80 mr-2 pl-2 py-1" 
+                      onChange={this.HandleOnChange}
                       value={this.state.password}
                       error={errors.password}
                       id="password"
-                      type="password" placeholder="Min. 6 characters"></input>
+                      type="password" autocomplete="on" placeholder="Min. 6 characters"></input>
                       <img alt="padlock" className="h-auto w-5 inline" src="/padlock.png"></img>
                     </div>
 
@@ -147,7 +140,6 @@ class SignUp extends React.Component{
         );
       }
 
-
         return (          
           <div className="w-screen">
             <div className="signup-bg bg-cover bg-center h-96 bg-no-repeat">
@@ -160,15 +152,18 @@ class SignUp extends React.Component{
     }
 }
 
+
 SignUp.propTypes = {
   registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };
+
 const mapStateToProps = state => ({
   auth: state.auth,
   errors: state.errors
 });
+
 export default connect(
   mapStateToProps,
   { registerUser }
